@@ -45,7 +45,7 @@ hiddenCanvas.height = 29;
 
 function updatePaletteDisplay(palette: PaletteColor[]) {
   currentPaletteDisplay.innerHTML = '';
-  palette.forEach((c, index) => {
+  palette.forEach((c) => {
     const div = document.createElement('div');
     div.className = 'palette-color';
     if (c.enabled === false) div.classList.add('disabled');
