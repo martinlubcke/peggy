@@ -27,7 +27,6 @@ const sliderContrast = document.getElementById('slider-contrast') as HTMLInputEl
 const sliderGamma = document.getElementById('slider-gamma') as HTMLInputElement;
 const sliderDither = document.getElementById('slider-dither') as HTMLInputElement;
 
-const btnGenerate = document.getElementById('btn-generate') as HTMLButtonElement;
 const canvasResult = document.getElementById('canvas-result') as HTMLCanvasElement;
 const btnDownloadPdf = document.getElementById('btn-download-pdf') as HTMLButtonElement;
 
@@ -149,7 +148,6 @@ function generatePattern() {
   slider.addEventListener('input', generatePattern);
 });
 
-btnGenerate.addEventListener('click', generatePattern);
 
 // 4. Ladda ner PDF
 btnDownloadPdf.addEventListener('click', () => {
