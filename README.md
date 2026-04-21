@@ -24,7 +24,7 @@ Starta utvecklingsservern (Vite) på `http://localhost:5173`:
 ### Bygga för produktion
 För att generera de statiska filerna som sedan kan köras överallt, kör:
 ```bash
-/opt/podman/bin/podman compose run --rm app sh -c "npm install && npm run build"
+docker compose run --rm app npm run build
 ```
 Detta bygger produktionstillgångarna inuti `docs/`-mappen. Volymen skyddar värdmaskinen från att få utläckta `node_modules`.
 
