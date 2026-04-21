@@ -143,9 +143,27 @@ function generatePattern() {
   currentPatternMatrix = processImageToPattern(hiddenCanvas, canvasResult, getCurrentPalette(), adj);
 }
 
+// Visa live-värden på reglage
+const sliderValueDisplays: Record<string, (v: number) => string> = {
+  'slider-r':        v => `${Math.round(v * 100)}%`,
+  'slider-g':        v => `${Math.round(v * 100)}%`,
+  'slider-b':        v => `${Math.round(v * 100)}%`,
+  'slider-contrast': v => `${Math.round(v)}`,
+  'slider-gamma':    v => v.toFixed(1),
+  'slider-dither':   v => `${Math.round(v * 100)}%`,
+};
+
+function updateSliderDisplay(slider: HTMLInputElement) {
+  const valEl = document.getElementById('val-' + slider.id.replace('slider-', ''));
+  if (valEl) valEl.textContent = sliderValueDisplays[slider.id](parseFloat(slider.value));
+}
+
 // Lyssna på reglage för live-uppdatering
 [sliderR, sliderG, sliderB, sliderContrast, sliderGamma, sliderDither].forEach(slider => {
-  slider.addEventListener('input', generatePattern);
+  slider.addEventListener('input', () => {
+    updateSliderDisplay(slider);
+    generatePattern();
+  });
 });
 
 
