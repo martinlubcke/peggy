@@ -24,7 +24,10 @@ const sliderR = document.getElementById('slider-r') as HTMLInputElement;
 const sliderG = document.getElementById('slider-g') as HTMLInputElement;
 const sliderB = document.getElementById('slider-b') as HTMLInputElement;
 const sliderContrast = document.getElementById('slider-contrast') as HTMLInputElement;
-const sliderGamma = document.getElementById('slider-gamma') as HTMLInputElement;
+const sliderBrightness = document.getElementById('slider-brightness') as HTMLInputElement;
+const sliderBp = document.getElementById('slider-bp') as HTMLInputElement;
+const sliderWp = document.getElementById('slider-wp') as HTMLInputElement;
+const sliderSaturation = document.getElementById('slider-saturation') as HTMLInputElement;
 const sliderDither = document.getElementById('slider-dither') as HTMLInputElement;
 
 const canvasResult = document.getElementById('canvas-result') as HTMLCanvasElement;
@@ -135,7 +138,10 @@ function generatePattern() {
     g: parseFloat(sliderG.value),
     b: parseFloat(sliderB.value),
     contrast: parseFloat(sliderContrast.value),
-    gamma: parseFloat(sliderGamma.value),
+    brightness: parseFloat(sliderBrightness.value),
+    blackPoint: parseFloat(sliderBp.value),
+    whitePoint: parseFloat(sliderWp.value),
+    saturation: parseFloat(sliderSaturation.value),
     dither: parseFloat(sliderDither.value)
   };
 
@@ -149,7 +155,10 @@ const sliderValueDisplays: Record<string, (v: number) => string> = {
   'slider-g':        v => `${Math.round(v * 100)}%`,
   'slider-b':        v => `${Math.round(v * 100)}%`,
   'slider-contrast': v => `${Math.round(v)}`,
-  'slider-gamma':    v => v.toFixed(1),
+  'slider-brightness': v => `${Math.round(v)}`,
+  'slider-bp':       v => `${Math.round(v)}`,
+  'slider-wp':       v => `${Math.round(v)}`,
+  'slider-saturation': v => `${Math.round(v * 100)}%`,
   'slider-dither':   v => `${Math.round(v * 100)}%`,
 };
 
@@ -159,7 +168,7 @@ function updateSliderDisplay(slider: HTMLInputElement) {
 }
 
 // Lyssna på reglage för live-uppdatering
-[sliderR, sliderG, sliderB, sliderContrast, sliderGamma, sliderDither].forEach(slider => {
+[sliderR, sliderG, sliderB, sliderContrast, sliderBrightness, sliderBp, sliderWp, sliderSaturation, sliderDither].forEach(slider => {
   slider.addEventListener('input', () => {
     updateSliderDisplay(slider);
     generatePattern();

@@ -5,7 +5,10 @@ export interface ImageAdjustments {
   g: number;
   b: number;
   contrast: number; // -100 to 100
-  gamma: number; // 0.1 to 3.0
+  brightness: number; // -255 to 255
+  blackPoint: number; // 0 to 255
+  whitePoint: number; // 0 to 255
+  saturation: number; // 0.0 to 5.0 (1.0 = original)
   dither: number; // 0.0 to 1.0
 }
 
@@ -46,11 +49,25 @@ export function processImageToPattern(
     g = factor * (g - 128) + 128;
     b = factor * (b - 128) + 128;
 
-    // Gamma
-    const gammaCorrection = 1 / adj.gamma;
-    r = 255 * Math.pow(Math.max(0, Math.min(255, r)) / 255, gammaCorrection);
-    g = 255 * Math.pow(Math.max(0, Math.min(255, g)) / 255, gammaCorrection);
-    b = 255 * Math.pow(Math.max(0, Math.min(255, b)) / 255, gammaCorrection);
+    // Ljusstyrka
+    r += adj.brightness;
+    g += adj.brightness;
+    b += adj.brightness;
+
+    // Levels (Svartpunkt & Vitpunkt)
+    const bp = adj.blackPoint;
+    const wp = adj.whitePoint;
+    const range = Math.max(1, wp - bp); // Undvik division med 0
+
+    r = 255 * (r - bp) / range;
+    g = 255 * (g - bp) / range;
+    b = 255 * (b - bp) / range;
+
+    // Färgmättnad
+    const L = 0.299 * r + 0.587 * g + 0.114 * b;
+    r = L + (r - L) * adj.saturation;
+    g = L + (g - L) * adj.saturation;
+    b = L + (b - L) * adj.saturation;
 
     data[i] = Math.max(0, Math.min(255, r));
     data[i + 1] = Math.max(0, Math.min(255, g));
