@@ -33,4 +33,4 @@ Eftersom produktionsbygget matar ut sina filer i `docs/` är det otroligt enkelt
 1. Checka in koden på `main`-branchen till GitHub.
 2. Gå till repots inställningar -> Pages.
 3. Välj "Deploy from a branch", sätt branchen till `main` och välj `/docs`-mappen.
-4. Spara, och appen är live! https://martinlubcke.github.io/Peggy/ 
+4. Spara, och appen är live! https://martinlubcke.github.io/peggy/
