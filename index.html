@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="sv">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Peggy - Pärlplattegenerator</title>
+    <!-- Cropper.css -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.6.1/cropper.min.css" rel="stylesheet">
+  </head>
+  <body>
+    <div id="app">
+      <header>
+        <h1>Peggy</h1>
+        <p>Skapa 29x29 pärlplattemönster</p>
+      </header>
+      <main>
+        <section class="upload-section">
+          <h2>1. Välj Palett</h2>
+          <div class="palette-options">
+            <button id="btn-standard-palette">Använd Hama Standardpalett</button>
+            <span>eller</span>
+            <label class="file-upload">
+              Ladda upp pärlhink
+              <input type="file" id="upload-bucket" accept="image/*" />
+            </label>
+          </div>
+          <div id="current-palette-display" class="palette-display"></div>
+        </section>
+
+        <section class="upload-section">
+          <h2>2. Välj Motivet</h2>
+          <label class="file-upload">
+            Ladda upp motiv
+            <input type="file" id="upload-image" accept="image/*" />
+          </label>
+        </section>
+
+        <section class="editor-section hidden" id="editor-section">
+          <div class="crop-container">
+            <h3>Beskär Bild (1:1)</h3>
+            <div><img id="image-to-crop" /></div>
+          </div>
+          <div class="controls-container">
+            <h3>Justeringar</h3>
+            
+            <label>Röd (0-200%) <input type="range" id="slider-r" min="0" max="2" step="0.05" value="1"></label>
+            <label>Grön (0-200%) <input type="range" id="slider-g" min="0" max="2" step="0.05" value="1"></label>
+            <label>Blå (0-200%) <input type="range" id="slider-b" min="0" max="2" step="0.05" value="1"></label>
+            <hr>
+            <label>Kontrast (-100 till 100) <input type="range" id="slider-contrast" min="-100" max="100" step="1" value="0"></label>
+            <label>Gamma (0.1 till 3.0) <input type="range" id="slider-gamma" min="0.1" max="3" step="0.1" value="1"></label>
+            <hr>
+            <label>Dithering (0-100%) <input type="range" id="slider-dither" min="0" max="1" step="0.1" value="0.5"></label>
+            
+            <button id="btn-generate">Generera Mönster</button>
+          </div>
+          <div class="preview-container">
+            <h3>Resultat (29x29)</h3>
+            <canvas id="canvas-result" width="290" height="290"></canvas>
+            <button id="btn-download-pdf">Ladda ner PDF</button>
+          </div>
+        </section>
+      </main>
+    </div>
+    <script type="module" src="/src/main.ts"></script>
+  </body>
+</html>
