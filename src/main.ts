@@ -14,6 +14,8 @@ import { generatePDF } from './pdfGenerator';
 const uploadBucket = document.getElementById('upload-bucket') as HTMLInputElement;
 const btnStandardPalette = document.getElementById('btn-standard-palette') as HTMLButtonElement;
 const currentPaletteDisplay = document.getElementById('current-palette-display') as HTMLDivElement;
+const btnAddColor = document.getElementById('btn-add-color') as HTMLButtonElement;
+const colorPickerInput = document.getElementById('color-picker-input') as HTMLInputElement;
 
 const uploadImage = document.getElementById('upload-image') as HTMLInputElement;
 const editorSection = document.getElementById('editor-section') as HTMLElement;
@@ -43,19 +45,53 @@ hiddenCanvas.height = 29;
 
 function updatePaletteDisplay(palette: PaletteColor[]) {
   currentPaletteDisplay.innerHTML = '';
-  palette.forEach(c => {
+  palette.forEach((c, index) => {
     const div = document.createElement('div');
     div.className = 'palette-color';
+    if (c.enabled === false) div.classList.add('disabled');
     div.style.backgroundColor = `rgb(${c.rgb[0]}, ${c.rgb[1]}, ${c.rgb[2]})`;
     div.title = c.name;
+    
+    div.addEventListener('click', () => {
+      c.enabled = c.enabled === false ? true : false;
+      updatePaletteDisplay(palette);
+      generatePattern();
+    });
+
     currentPaletteDisplay.appendChild(div);
   });
 }
 
 // 1. Palett från pärlhink eller standard
 btnStandardPalette.addEventListener('click', () => {
-  setCurrentPalette([...HAMA_STANDARD_PALETTE]);
-  updatePaletteDisplay(HAMA_STANDARD_PALETTE);
+  // Deep copy för att inte ändra originalet
+  const newPalette = HAMA_STANDARD_PALETTE.map(c => ({...c}));
+  setCurrentPalette(newPalette);
+  updatePaletteDisplay(newPalette);
+  generatePattern();
+});
+
+btnAddColor.addEventListener('click', () => {
+  colorPickerInput.click();
+});
+
+colorPickerInput.addEventListener('change', (e) => {
+  const hex = (e.target as HTMLInputElement).value;
+  // Konvertera hex till rgb
+  const r = parseInt(hex.substring(1, 3), 16);
+  const g = parseInt(hex.substring(3, 5), 16);
+  const b = parseInt(hex.substring(5, 7), 16);
+  
+  const current = getCurrentPalette();
+  current.push({
+    id: `Custom-Manual-${Date.now()}`,
+    name: `Egen Färg`,
+    rgb: [r, g, b],
+    enabled: true
+  });
+  
+  updatePaletteDisplay(current);
+  generatePattern();
 });
 
 uploadBucket.addEventListener('change', (e) => {

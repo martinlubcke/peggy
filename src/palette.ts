@@ -4,24 +4,25 @@ export interface PaletteColor {
   id: string;
   name: string;
   rgb: RGB;
+  enabled?: boolean;
 }
 
 // En standard Hama Midi palett (ett urval av vanliga färger)
 export const HAMA_STANDARD_PALETTE: PaletteColor[] = [
-  { id: '01', name: 'White', rgb: [240, 240, 240] },
-  { id: '18', name: 'Black', rgb: [20, 20, 20] },
-  { id: '05', name: 'Red', rgb: [200, 30, 40] },
-  { id: '10', name: 'Green', rgb: [30, 150, 60] },
-  { id: '08', name: 'Blue', rgb: [20, 60, 180] },
-  { id: '03', name: 'Yellow', rgb: [240, 200, 20] },
-  { id: '04', name: 'Orange', rgb: [220, 110, 20] },
-  { id: '06', name: 'Pink', rgb: [230, 120, 150] },
-  { id: '07', name: 'Purple', rgb: [120, 60, 140] },
-  { id: '12', name: 'Brown', rgb: [90, 50, 30] },
-  { id: '17', name: 'Grey', rgb: [130, 130, 130] },
-  { id: '22', name: 'Dark Red', rgb: [140, 20, 30] },
-  { id: '09', name: 'Light Blue', rgb: [100, 160, 220] },
-  { id: '11', name: 'Light Green', rgb: [130, 200, 120] },
+  { id: '01', name: 'White', rgb: [240, 240, 240], enabled: true },
+  { id: '18', name: 'Black', rgb: [20, 20, 20], enabled: true },
+  { id: '05', name: 'Red', rgb: [200, 30, 40], enabled: true },
+  { id: '10', name: 'Green', rgb: [30, 150, 60], enabled: true },
+  { id: '08', name: 'Blue', rgb: [20, 60, 180], enabled: true },
+  { id: '03', name: 'Yellow', rgb: [240, 200, 20], enabled: true },
+  { id: '04', name: 'Orange', rgb: [220, 110, 20], enabled: true },
+  { id: '06', name: 'Pink', rgb: [230, 120, 150], enabled: true },
+  { id: '07', name: 'Purple', rgb: [120, 60, 140], enabled: true },
+  { id: '12', name: 'Brown', rgb: [90, 50, 30], enabled: true },
+  { id: '17', name: 'Grey', rgb: [130, 130, 130], enabled: true },
+  { id: '22', name: 'Dark Red', rgb: [140, 20, 30], enabled: true },
+  { id: '09', name: 'Light Blue', rgb: [100, 160, 220], enabled: true },
+  { id: '11', name: 'Light Green', rgb: [130, 200, 120], enabled: true },
 ];
 
 let currentPalette: PaletteColor[] = [...HAMA_STANDARD_PALETTE];
@@ -36,10 +37,13 @@ export function getCurrentPalette(): PaletteColor[] {
 
 // Hittar närmaste färg med Euklidiskt avstånd
 export function findNearestColor(r: number, g: number, b: number, palette: PaletteColor[]): PaletteColor {
-  let minDistance = Infinity;
-  let nearestColor = palette[0];
+  const activePalette = palette.filter(c => c.enabled !== false);
+  if (activePalette.length === 0) return palette[0]; // Fallback om alla är avstängda
 
-  for (const color of palette) {
+  let minDistance = Infinity;
+  let nearestColor = activePalette[0];
+
+  for (const color of activePalette) {
     const [pr, pg, pb] = color.rgb;
     // Viktat euklidiskt avstånd för att mänskliga ögat är känsligare för grönt
     const dr = r - pr;
@@ -125,8 +129,9 @@ export function extractPaletteFromImage(imgData: ImageData, colorCount: number =
     if (!isDuplicate && !isNaN(c[0])) {
       uniquePalettes.push({
         id: `Custom-${i}`,
-        name: `Färg ${i+1}`,
-        rgb: c
+        name: `Egen färg`,
+        rgb: c,
+        enabled: true
       });
     }
   });

@@ -143,8 +143,9 @@ button:active, .file-upload:active {
   height: 30px;
   border-radius: 50%;
   border: 2px solid rgba(255, 255, 255, 0.08);
-  transition: transform 0.15s ease, border-color 0.15s ease, box-shadow 0.15s ease;
-  cursor: default;
+  transition: transform 0.15s ease, border-color 0.15s ease, box-shadow 0.15s ease, opacity 0.15s ease;
+  cursor: pointer;
+  position: relative;
 }
 
 .palette-color:hover {
@@ -152,7 +153,50 @@ button:active, .file-upload:active {
   border-color: rgba(255, 255, 255, 0.4);
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);
   z-index: 1;
-  position: relative;
+}
+
+.palette-color.disabled {
+  opacity: 0.3;
+  transform: scale(0.9);
+}
+
+.palette-color.disabled:hover {
+  transform: scale(1.1);
+}
+
+.palette-color.disabled::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: -2px;
+  right: -2px;
+  height: 2px;
+  background-color: #ff3333;
+  transform: translateY(-50%) rotate(45deg);
+}
+
+#btn-add-color {
+  padding: 0;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  border: none;
+  background: var(--accent-color);
+  color: #000;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+  font-size: 1.2rem;
+  overflow: hidden;
+}
+
+#color-picker-input {
+  visibility: hidden;
+  position: absolute;
+  width: 0;
+  height: 0;
 }
 
 .editor-section {
