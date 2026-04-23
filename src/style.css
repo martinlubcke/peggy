@@ -24,6 +24,7 @@ body {
   color: var(--text-color);
   min-height: 100vh;
   line-height: 1.5;
+  overflow-x: hidden;
 }
 
 header {
@@ -103,6 +104,8 @@ button, .file-upload {
   display: inline-block;
   box-shadow: 0 4px 14px rgba(187, 134, 252, 0.35);
   letter-spacing: 0.2px;
+  touch-action: manipulation;
+  min-height: 44px;
 }
 
 button:hover, .file-upload:hover {
@@ -269,6 +272,7 @@ button:active, .file-upload:active {
   background: var(--border-color);
   outline: none;
   cursor: pointer;
+  touch-action: manipulation;
 }
 
 .controls-container input[type="range"]::-webkit-slider-thumb {
@@ -318,5 +322,52 @@ button:active, .file-upload:active {
   image-rendering: pixelated;
   width: 290px;
   height: 290px;
+  aspect-ratio: 1;
   box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.04), var(--shadow-md);
+}
+
+@media (max-width: 600px) {
+  header {
+    padding: 1.5rem 1rem 1.25rem;
+  }
+
+  header h1 {
+    font-size: 1.75rem;
+    letter-spacing: -0.5px;
+  }
+
+  main {
+    padding: 1rem;
+    gap: 1rem;
+  }
+
+  section {
+    padding: 1.25rem 1rem;
+    border-radius: 10px;
+  }
+
+  #canvas-result {
+    width: 100%;
+    height: auto;
+    max-width: 290px;
+  }
+
+  .palette-options {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .controls-container input[type="range"] {
+    height: 6px;
+  }
+
+  .controls-container input[type="range"]::-webkit-slider-thumb {
+    width: 24px;
+    height: 24px;
+  }
+
+  .controls-container input[type="range"]::-moz-range-thumb {
+    width: 24px;
+    height: 24px;
+  }
 }
